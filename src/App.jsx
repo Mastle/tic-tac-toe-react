@@ -1,14 +1,41 @@
 import { useState } from 'react'
-import './App.css'
+import './styles.css'
 
-function App() {
-  const [count, setCount] = useState(0)
+function Square() {
+  const [value, setValue] = useState()
+
+  const handleClick = () => {
+    setValue("x")
+  }
+
+  return <button className="square" onClick={handleClick}>{value}</button>
+}
+
+
+
+
+
+export default function Board() {
+
 
   return (
     <>
-      <h1>my tic tac toe test</h1>
+      <div className="board-row">
+        <Square />
+        <Square />
+        <Square />
+      </div>
+      <div className="board-row">
+        <Square />
+        <Square />
+        <Square />
+      </div>
+      <div className="board-row">
+        <Square />
+        <Square />
+        <Square />
+      </div>
     </>
   )
 }
 
-export default App
