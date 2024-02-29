@@ -58,17 +58,17 @@ body {
 
 .square {
     background: #fff;
-    border: 1px solid #999;
+    border: 3px solid #474747;
     float: left;
-    font-size: 24px;
+    font-size: 5rem;
     font-weight: bold;
     line-height: 34px;
-    height: 34px;
+    height: 10rem;
     margin-right: -1px;
     margin-top: -1px;
     padding: 0;
     text-align: center;
-    width: 34px;
+    width: 10rem;
 }
 
 .board-row:after {
@@ -88,4 +88,10 @@ body {
 
 .game-info {
     margin-left: 20px;
+}
+
+.container {
+    width: 477px;
+    margin-inline: auto;
+    padding-top: 3rem;
 }
