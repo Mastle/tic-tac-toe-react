@@ -95,3 +95,9 @@ body {
     margin-inline: auto;
     padding-top: 3rem;
 }
+
+.game-state-announcer {
+    font-size: 4rem;
+    text-align: center;
+    padding-bottom: 2rem;
+}
