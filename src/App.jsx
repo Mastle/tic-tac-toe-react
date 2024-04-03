@@ -1,3 +1,16 @@
+/* 
+TODO:
+ (Finished, fuck yeah!) 1 -  For the current move only, show “You are at move #…” instead of a button.
+ 2 - Current step: Rewrite Board to use two loops to make the squares instead of hardcoding them.
+ 3 - Add a toggle button that lets you sort the moves in either ascending or descending order.
+ 4 - When someone wins, highlight the three squares that caused the win (and when no one wins, display a message about the result being a draw).
+ 5 - Display the location for each move in the format (row, col) in the move history list.
+Next:
+ - Reviewing the must know things about react by watching (maybe even pracitcing) Brad's latest tutorial on React. 
+ - Consider how you are going to create the piano emulator that is supposed to be the bedrock of Harmony Hub and your magnum opus for becoming a solid software engineering team. 
+ A little research will probably be needed. What other prerequisites are neeeded (prolly next.js) ? once you've figured out those by fully conceiving the project you want to create as much as you can, you're ready to move on.
+
+*/
 import { useState } from 'react'
 import './styles.css'
 
@@ -113,7 +126,16 @@ const Game = () => {
   const moves = history.map((squares, move) => {
     let description
     if (move > 0) {
-      description = ' Go to move #' + move
+      if (move === currentMove) {
+        description = ' You are currently at move #' + move
+        return (
+          <li key={move}>
+            <h1>{description}</h1>
+          </li>
+        )
+
+      } else
+        description = ' Go to move #' + move
     } else {
       description = 'Go to the game start'
     }
@@ -132,7 +154,7 @@ const Game = () => {
         <Board xIsNext={xIsNext} squares={currentSquares} onPlay={handlePlay} />
       </div>
       <div className="game-info">
-        <ol>{moves}</ol>
+        <ul>{moves}</ul>
       </div>
     </div>
   )
