@@ -1,6 +1,6 @@
 /* 
 TODO:
- 2 - Current step: Rewrite Board to use two loops to make the squares instead of hardcoding them. (4/10/2024) update: I did manage to create the loops, but I also broke the code. currently, I have no idea why clicking won't add X's and O's to the board anymore
+ 2 - Current step: Rewrite Board to use two loops to make the squares instead of hardcoding them.
  3 - Add a toggle button that lets you sort the moves in either ascending or descending order.
  4 - When someone wins, highlight the three squares that caused the win (and when no one wins, display a message about the result being a draw).
  5 - Display the location for each move in the format (row, col) in the move history list.
@@ -16,7 +16,7 @@ import './styles.css'
 function Square({ value, onSquareClick }) {
 
 
-  return <button className="square" onClick={onSquareClick}> {value}</button>
+  return <button className="square" onClick={onSquareClick}>{value}</button>
 }
 
 
@@ -51,6 +51,33 @@ function Board({ xIsNext, squares, onPlay }) {
     status = "Next Player: " + (xIsNext ? "X" : "O")
   }
 
+  const renderSquares = () => {
+    const board = []
+    let squareIndex = 0
+
+    for (let i = 0; i < 3; i++) {
+      const row = []
+
+
+      for (let j = 0; j < 3; j++) {
+        const squareIndex = i * 3 + j // Calculate squareIndex for each iteration
+
+        row.push(
+          <Square
+            key={squareIndex}
+            value={squares[squareIndex]}
+            onSquareClick={() => handleClick(squareIndex)} //current step: I found the problems, by the time "handleClick fires off, squareIndex has been set to 9, how can I solve this problem?"
+          />
+        )
+
+      }
+      board.push(<div key={i} className="board-row">{row}</div>)
+    }
+
+    return board
+
+  }
+
 
 
   return (
@@ -59,21 +86,7 @@ function Board({ xIsNext, squares, onPlay }) {
         <div className="game-state-announcer">
           {status}
         </div>
-        <div className="board-row">
-          <Square value={squares[0]} onSquareClick={() => handleClick(0)} />
-          <Square value={squares[1]} onSquareClick={() => handleClick(1)} />
-          <Square value={squares[2]} onSquareClick={() => handleClick(2)} />
-        </div>
-        <div className="board-row">
-          <Square value={squares[3]} onSquareClick={() => handleClick(3)} />
-          <Square value={squares[4]} onSquareClick={() => handleClick(4)} />
-          <Square value={squares[5]} onSquareClick={() => handleClick(5)} />
-        </div>
-        <div className="board-row">
-          <Square value={squares[6]} onSquareClick={() => handleClick(6)} />
-          <Square value={squares[7]} onSquareClick={() => handleClick(7)} />
-          <Square value={squares[8]} onSquareClick={() => handleClick(8)} />
-        </div>
+        {renderSquares()}
       </div>
     </>
   )
