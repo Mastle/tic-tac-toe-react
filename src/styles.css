@@ -44,10 +44,12 @@ code {
 
 ul {
     padding-inline-start: 20px;
-    position: relative;
     top: 10rem;
 }
 
+ul li {
+    margin-block: 0.5rem;
+}
 
 
 * {
