@@ -1,10 +1,9 @@
 /* 
 TODO:
- 4 - When someone wins, highlight the three squares that caused the win (and when no one wins, display a message about the result being a draw).
- 5 - Display the location for each move in the format (row, col) in the move history list.
- 6-  The history might have a game breaking bug. Not sure how to recreate the bug, but if it occurs again, try to fix it
- 7-  This tic tac toe game seems like an amazing opportunity for leaning react and javascript deeply. It feels like a project that has all the features that allow you to understand how react actually works. Once you've figured out those subtlty , you'll be confident enough to consider yourself a beginner react developer
-Next:
+  5 - Display the location for each move in the format (row, col) in the move history list.
+  6 -  TL;DR: gotta study the fuck outta this shit )This tic tac toe game seems like an amazing opportunity for leaning react and javascript deeply. It feels like a project that has all the features that allow you to understand how react actually works. Once you've figured out those subtlty , you'll be confident enough to consider yourself a beginner react developer
+
+ Next:
  - Reviewing the must know things about react by watching (maybe even pracitcing) Brad's latest tutorial on React. 
  - Consider how you are going to create the piano emulator that is supposed to be the bedrock of Harmony Hub and your magnum opus for becoming a solid software engineering team. 
  A little research will probably be needed. What other prerequisites are neeeded (prolly next.js) ? once you've figured out those by fully conceiving the project you want to create as much as you can, you're ready to move on.
@@ -13,16 +12,17 @@ Next:
 import { useState } from 'react'
 import './styles.css'
 
-function Square({ value, onSquareClick }) {
+function Square({ value, onSquareClick, winningSquare = { color: null } }) {
 
 
-    return <button className="square" onClick={onSquareClick}>{value}</button>
+    return <button className="square" onClick={onSquareClick} style={winningSquare}>{value}</button>
 }
 
 
 
 
 function Board({ xIsNext, squares, onPlay }) {
+    let winningIndexes = []
 
     const handleClick = (i) => {
         if (calculateWinner(squares) || squares[i]) {
@@ -42,18 +42,19 @@ function Board({ xIsNext, squares, onPlay }) {
         onPlay(nextSquares)
 
     }
+
     const winner = calculateWinner(squares)
 
     let status
     if (winner) {
-        status = "Winner: " + winner
+        winningIndexes = winner
+        status = "Winner: " + winner[3]
     } else {
         status = "Next Player: " + (xIsNext ? "X" : "O")
     }
 
     const renderSquares = () => {
         const board = []
-        let squareIndex = 0
 
         for (let i = 0; i < 3; i++) {
             const row = []
@@ -61,15 +62,28 @@ function Board({ xIsNext, squares, onPlay }) {
 
             for (let j = 0; j < 3; j++) {
                 const squareIndex = i * 3 + j
+                let isWinningSquare = false
+
+
+
+
+                if (winningIndexes.length > 0) {
+                    for (let k = 0; k < 3; k++) {
+                        if (winningIndexes[k] === squareIndex) {
+                            isWinningSquare = true
+                            break
+                        }
+                    }
+                }
 
                 row.push(
                     <Square
                         key={squareIndex}
                         value={squares[squareIndex]}
                         onSquareClick={() => handleClick(squareIndex)}
+                        winningSquare={isWinningSquare ? { color: "purple" } : {}}
                     />
                 )
-
             }
             board.push(<div key={i} className="board-row">{row}</div>)
         }
@@ -108,9 +122,11 @@ const calculateWinner = (squares) => {
 
     for (let i = 0; i < lines.length; i++) {
         const [a, b, c] = lines[i]
+        const winnerIndexes = [a, b, c]
 
         if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
-            return squares[a]
+            const winnerIndexesSquare = [...winnerIndexes, squares[a]]
+            return winnerIndexesSquare
 
         }
 
@@ -180,11 +196,10 @@ const Game = () => {
             </div>
             <div className="game-info">
                 <ul>{moves}</ul>
-                {isAscending ? <button onClick={() => orderAsc()}>Descending</button> : <button onClick={() => orderAsc()}>Ascending</button>}
+                {isAscending ? <button onClick={() => orderAsc()}> sort by descending order</button> : <button onClick={() => orderAsc()}>sort by ascending order</button>}
             </div>
         </div>
     )
 }
 
 export default Game
-
