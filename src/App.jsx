@@ -12,25 +12,17 @@ TODO:
 import { useState } from 'react'
 import './styles.css'
 
-function Square({ value, onSquareClick, winningSquare = { color: null } }, theSqrnumber) {
-    const sendDataToBoard = () => {
-        const anotherOne = 30
-        theSqrnumber(anotherOne)
-    }
+function Square({ value, onSquareClick, winningSquare = { color: null } }) {
 
 
-    return <button className="square" onClick={onSquareClick} onDoubleClick={sendDataToBoard} style={winningSquare}>{value}</button>
+    return <button className="square" onClick={onSquareClick} style={winningSquare}>{value}</button>
 }
 
 
 
 
-function Board({ xIsNext, squares, onPlay, getSqrNumber }) {
+function Board({ xIsNext, squares, onPlay }) {
     let winningIndexes = []
-    const sendDataToGame = () => {
-        const realSqrnumber = '14'
-        getSqrNumber(realSqrnumber)
-    }
 
     const handleClick = (i) => {
         if (calculateWinner(squares) || squares[i]) {
@@ -83,14 +75,13 @@ function Board({ xIsNext, squares, onPlay, getSqrNumber }) {
                         }
                     }
                 }
+
                 row.push(
                     <Square
                         key={squareIndex}
                         value={squares[squareIndex]}
                         onSquareClick={() => handleClick(squareIndex)}
                         winningSquare={isWinningSquare ? { color: "purple" } : {}}
-                        theSqrnumber={getSqrNumber}
-                    //current step: why does the above prop does not pass as a functiuon? trying to pass data up to Game component from the grandchilren square function
                     />
                 )
             }
@@ -111,7 +102,6 @@ function Board({ xIsNext, squares, onPlay, getSqrNumber }) {
                 </div>
                 {renderSquares()}
             </div>
-            <button onClick={sendDataToGame}>Click me</button>
         </>
     )
 }
@@ -194,9 +184,6 @@ const Game = () => {
         setIsAscending(!isAscending)
 
     }
-    const showSquareNumber = (sqrNumber) => {
-        console.log(sqrNumber)
-    }
 
 
 
@@ -205,7 +192,7 @@ const Game = () => {
     return (
         <div className="game">
             <div className="game-board">
-                <Board xIsNext={xIsNext} squares={currentSquares} onPlay={handlePlay} getSqrNumber={showSquareNumber} />
+                <Board xIsNext={xIsNext} squares={currentSquares} onPlay={handlePlay} />
             </div>
             <div className="game-info">
                 <ul>{moves}</ul>
